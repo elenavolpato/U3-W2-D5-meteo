@@ -1,14 +1,8 @@
 import { Col, Row } from "react-bootstrap"
 import weatherDescriptions from "../data/weatherDescriptions.json"
 
-const TodaysForecast = ({ weatherData, searchedCity }) => {
+const TodaysForecast = ({ weatherData }) => {
   const convertTempToCelsius = (temp) => (temp - 273.15).toFixed(1) + " °C"
-
-  const capitalizeFirstLetter = (city) => {
-    return (
-      String(city).charAt(0).toUpperCase() + String(city).slice(1).toLowerCase()
-    )
-  }
 
   const renderCurrentConditions = (main, description) => {
     const category = main.toLowerCase()
@@ -19,34 +13,45 @@ const TodaysForecast = ({ weatherData, searchedCity }) => {
 
     return weatherIcon
   }
-
+  const capitalizeFirstLetter = (city) => {
+    return (
+      String(city).charAt(0).toUpperCase() + String(city).slice(1).toLowerCase()
+    )
+  }
   return (
     <>
       {weatherData && (
         <Col
           xs={12}
-          md={4}
-          className="border border-1 border-light rounded p-4 light-bg m-3  align-items-center"
+          lg={4}
+          className="border border-1 border-white-50 rounded p-4 light-bg m-0 align-items-center"
         >
-          <Row className="d-flex justify-content-center">
+          <Row className="d-flex justify-content-center align-items-center mt-3">
             <Col>
               <i
-                className={`bi ${renderCurrentConditions(weatherData.weather[0].main, weatherData.weather[0].description)} fs-1 mt-1`}
+                className={`bi ${renderCurrentConditions(weatherData.weather[0].main, weatherData.weather[0].description)} mt-1 large-icon`}
               ></i>
-              <p>{capitalizeFirstLetter(searchedCity)}</p>
+              <p>{capitalizeFirstLetter(weatherData.weather[0].description)}</p>
             </Col>
-            <Col>
+            <Col xs={7}>
               <p className="fs-1 fw-bold mt-1 mb-0">
                 {convertTempToCelsius(weatherData.main.temp)}
               </p>
               <p>
-                Fells like: {convertTempToCelsius(weatherData.main.feels_like)}
+                Feels like: <br />
+                {convertTempToCelsius(weatherData.main.feels_like)}
               </p>
             </Col>
           </Row>
-          <Row>
-            <Col>Min {convertTempToCelsius(weatherData.main.temp_min)}</Col>
-            <Col>Max {convertTempToCelsius(weatherData.main.temp_max)}</Col>
+          <Row className="mt-2">
+            <Col className="fs-5 fw-medium">
+              <i class="bi bi-arrow-down text-info"></i>
+              {convertTempToCelsius(weatherData.main.temp_min)}
+            </Col>
+            <Col className="fs-5 fw-medium">
+              <i class="bi bi-arrow-up text-danger"></i>
+              {convertTempToCelsius(weatherData.main.temp_max)}
+            </Col>
           </Row>
         </Col>
       )}

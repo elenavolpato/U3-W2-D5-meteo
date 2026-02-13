@@ -1,6 +1,6 @@
 import { Container, Row } from "react-bootstrap"
 import TodaysForecast from "../components/TodaysForecast"
-import FiveDaysForecast from "../components/FiveDaysForecast"
+import PollutionStatus from "../components/PollutionStatus"
 import OtherStatus from "../components/OtherStatus"
 import ThreeHoursForecast from "../components/ThreeHourForecast"
 import SearchBar from "../components/SearchBar"
@@ -22,15 +22,21 @@ const Home = () => {
         if (res.ok) return res.json()
         else throw new Error("Error in fetching current weather data")
       })
-      .then((res) => {
-        console.log("here", res)
-        setWeatherData(res)
+      .then((data) => {
+        setWeatherData(data)
         setIsLoading(false)
+        console.log("weather data", weatherData)
       })
       .catch((err) => {
         console.error("error fetching data", err)
         setIsLoading(false)
       })
+  }
+
+  const capitalizeFirstLetter = (city) => {
+    return (
+      String(city).charAt(0).toUpperCase() + String(city).slice(1).toLowerCase()
+    )
   }
 
   const handleSearchClick = (cityName) => {
@@ -43,9 +49,14 @@ const Home = () => {
   }, [searchedCity])
   return (
     <>
-      <Container>
+      <h1 className="mt-5 text-center title">Do I need a umbrella? </h1>
+      <Container
+        className="d-flex flex-column justify-content-center align-items-center
+        h-100 pt-5 "
+      >
         <SearchBar handleSearchClick={handleSearchClick} />
-        <Row>
+        <h2>Weather forecast for {capitalizeFirstLetter(searchedCity)}</h2>
+        <Row className="gap-3 container-fluid justify-content-center my-3">
           {isLoading && <Loading />}
           {weatherData && (
             <TodaysForecast
@@ -54,10 +65,25 @@ const Home = () => {
               searchedCity={searchedCity}
             />
           )}
-          <ThreeHoursForecast />
+          {isLoading && <Loading />}
+          {weatherData && (
+            <ThreeHoursForecast
+              lon={weatherData.coord.lon}
+              lat={weatherData.coord.lat}
+              apiKey={apiKey}
+            />
+          )}
         </Row>
-        <Row>
-          <FiveDaysForecast />
+        <Row className="gap-3 container-fluid justify-content-center">
+          {isLoading && <Loading />}
+          {weatherData && (
+            <PollutionStatus
+              lon={weatherData.coord.lon}
+              lat={weatherData.coord.lat}
+              apiKey={apiKey}
+            />
+          )}
+          {isLoading && <Loading />}
           {weatherData && <OtherStatus weatherData={weatherData} />}
         </Row>
       </Container>

@@ -18,23 +18,25 @@ const SearchBar = (props) => {
     }
   }
   return (
-    <InputGroup className="mb-3">
-      <Form.Control
-        placeholder="Search city name"
-        aria-label="search"
-        aria-describedby="basic-addon1"
-        value={searchVal}
-        onChange={handleSearchChange}
-        onKeyDown={handleKeyDown}
-      />
-      <Button
-        variant="outline-secondary"
-        id="button-addon2"
-        onClick={handleSearchClick}
-      >
-        Search
-      </Button>
-    </InputGroup>
+    <Col xs={6}>
+      <InputGroup className="mb-3 ">
+        <Form.Control
+          placeholder="Search city name"
+          aria-label="search"
+          aria-describedby="basic-addon1"
+          value={searchVal}
+          onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
+        />
+        <Button
+          variant="outline-secondary"
+          id="button-addon2"
+          onClick={handleSearchClick}
+        >
+          Search
+        </Button>
+      </InputGroup>
+    </Col>
   )
 }
 export default SearchBar
