@@ -16,3 +16,7 @@
 .no-margin {
   margin-inline: -8px;
 }
+
+.wind-container {
+  min-width: 170px !important;
+}

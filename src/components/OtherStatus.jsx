@@ -21,7 +21,7 @@ const OtherStatus = (props) => {
           </div>
         </Col>
         <Col xs={6}>
-          <div className="d-flex flex-column justify-content-end align-items-center pt-4 pb-4 border border-1 border-white-50 rounded light-bg h-100 ">
+          <div className="d-flex flex-column justify-content-end align-items-center pt-4 pb-4 border border-1 border-white-50 rounded light-bg h-100 wind-container">
             <h5>
               <i class="bi bi-wind"></i>&nbsp;Wind
             </h5>
