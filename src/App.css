@@ -12,3 +12,7 @@
 .personalized-padding {
   padding-block: 37px !important;
 }
+
+.no-margin {
+  margin-inline: -8px;
+}
