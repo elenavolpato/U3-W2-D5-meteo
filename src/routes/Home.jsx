@@ -63,8 +63,8 @@ const Home = () => {
           {isLoading && <Loading />}
           {weatherData && (
             <ThreeHoursForecast
-            /*    lon={weatherData.coord.lon}
-              lat={weatherData.coord.lat} */
+              lon={weatherData.coord.lon}
+              lat={weatherData.coord.lat}
             />
           )}
         </Row>
@@ -72,8 +72,8 @@ const Home = () => {
           {isLoading && <Loading />}
           {weatherData && (
             <PollutionStatus
-            /*       lon={weatherData.coord.lon}
-              lat={weatherData.coord.lat} */
+              lon={weatherData.coord.lon}
+              lat={weatherData.coord.lat}
             />
           )}
           {isLoading && <Loading />}
