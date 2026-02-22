@@ -3,7 +3,7 @@ import weatherDescriptions from "../data/weatherDescriptions.json"
 
 const TodaysForecast = (props) => {
   const { weatherData, capitalizeFirstLetter } = props
-  const convertTempToCelsius = (temp) => (temp - 273.15).toFixed(1) + " °C"
+  const convertTempToCelsius = (temp) => temp.toFixed(1) + " °C"
 
   const renderCurrentConditions = (main, description) => {
     const category = main.toLowerCase()

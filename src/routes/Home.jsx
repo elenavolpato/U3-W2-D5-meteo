@@ -7,17 +7,13 @@ import SearchBar from "../components/SearchBar"
 import Loading from "../components/Loading"
 import { useState, useEffect } from "react"
 
-const apiKey = "bc45c3a9cab5095ab402b5746a08d45e"
-
 const Home = () => {
   const [searchedCity, setSearchedCity] = useState("Rio de Janeiro")
   const [weatherData, setWeatherData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
 
   const getTodaysWeather = () => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${apiKey}`,
-    )
+    fetch(`/api/weather?city=${searchedCity}`)
       .then((res) => {
         if (res.ok) return res.json()
         else throw new Error("Error in fetching current weather data")
@@ -25,7 +21,6 @@ const Home = () => {
       .then((data) => {
         setWeatherData(data)
         setIsLoading(false)
-        console.log("weather data", weatherData)
       })
       .catch((err) => {
         console.error("error fetching data", err)
@@ -46,6 +41,7 @@ const Home = () => {
     if (searchedCity) {
       getTodaysWeather()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchedCity])
   return (
     <>
@@ -69,7 +65,6 @@ const Home = () => {
             <ThreeHoursForecast
               lon={weatherData.coord.lon}
               lat={weatherData.coord.lat}
-              apiKey={apiKey}
             />
           )}
         </Row>
@@ -79,7 +74,6 @@ const Home = () => {
             <PollutionStatus
               lon={weatherData.coord.lon}
               lat={weatherData.coord.lat}
-              apiKey={apiKey}
             />
           )}
           {isLoading && <Loading />}

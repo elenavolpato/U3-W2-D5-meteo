@@ -1,17 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react"
 import { Col, Row } from "react-bootstrap"
 import weatherDescriptions from "../data/weatherDescriptions.json"
 
 const ThreeHoursForecast = (props) => {
-  const { lon, lat, apiKey } = props
+  const { lon, lat } = props
 
   const [weatherData, setWeatherData] = useState(null)
-  const convertTempToCelsius = (temp) => (temp - 273.15).toFixed(1) + " °C"
+  const convertTempToCelsius = (temp) => temp.toFixed(1) + " °C"
 
   const getThreeHoursForecast = () => {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}`,
-    )
+    fetch(`/api/forecast?lat=${lat}&lon=${lon}`)
       .then((res) => {
         if (res.ok) return res.json()
         else throw new Error("Error in fetching current weather data")

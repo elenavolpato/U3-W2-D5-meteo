@@ -10,13 +10,11 @@ const aqiDictionary = [
 ]
 
 const PollutionStatus = (props) => {
-  const { lon, lat, apiKey } = props
+  const { lon, lat } = props
 
   const [weatherData, setWeatherData] = useState(null)
   const getPollutionStatus = () => {
-    fetch(
-      `http://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`,
-    )
+    fetch(`/api/pollution?lat=${lat}&lon=${lon}`)
       .then((res) => {
         if (res.ok) return res.json()
         else throw new Error("Error in fetching current weather data")

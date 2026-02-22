@@ -9,7 +9,9 @@ const SearchBar = (props) => {
   }
 
   const handleSearchClick = () => {
-    props.handleSearchClick(searchVal) // Pass the search value to parent
+    props.handleSearchClick(searchVal)
+
+    setSearchVal("")
   }
 
   const handleKeyDown = (e) => {
