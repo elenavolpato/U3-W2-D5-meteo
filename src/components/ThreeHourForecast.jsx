@@ -59,8 +59,11 @@ const ThreeHoursForecast = (props) => {
       <h5 className="m-0">Today's 3 hours forecast</h5>
       <Row>
         {weatherData &&
-          weatherData.map((hourForecast) => (
-            <Col className="text-white text-center align-items-center pt-4">
+          weatherData.map((hourForecast, index) => (
+            <Col
+              className="text-white text-center align-items-center pt-4"
+              key={index}
+            >
               <p>{formatDate(hourForecast.dt_txt)}h00</p>
               <h5>{convertTempToCelsius(hourForecast.main.temp)}</h5>
               <i

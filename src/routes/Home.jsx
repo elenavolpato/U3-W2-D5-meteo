@@ -8,11 +8,41 @@ import Loading from "../components/Loading"
 import { useState, useEffect } from "react"
 
 const Home = () => {
-  const [searchedCity, setSearchedCity] = useState("Rio de Janeiro")
+  const [searchedCity, setSearchedCity] = useState("")
   const [weatherData, setWeatherData] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const [lat, setLat] = useState("")
+  const [lon, setLon] = useState("")
+
+  const getCityName = (lat, lon) => {
+    setIsLoading(true)
+
+    fetch(`/api/reverse?lat=${lat}&lon=${lon}`)
+      .then((res) => {
+        if (!res.ok) {
+          return res.text().then((text) => {
+            throw new Error(`Error fetching city name: ${text}`)
+          })
+        }
+        return res.json()
+      })
+      .then((data) => {
+        if (!data || data.length === 0) {
+          throw new Error("No city found")
+        }
+        const city = `${capitalizeFirstLetter(data[0].name)},  ${data[0].country.toUpperCase()}`
+
+        setSearchedCity(city)
+        setIsLoading(false)
+      })
+      .catch((err) => {
+        console.error("error fetching data", err)
+        setIsLoading(false)
+      })
+  }
 
   const getTodaysWeather = () => {
+    setIsLoading(true)
     fetch(`/api/weather?city=${searchedCity}`)
       .then((res) => {
         if (res.ok) return res.json()
@@ -37,12 +67,33 @@ const Home = () => {
   const handleSearchClick = (cityName) => {
     setSearchedCity(cityName)
   }
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          const latitude = position.coords.latitude
+          const longitude = position.coords.longitude
+
+          setLat(latitude)
+          setLon(longitude)
+
+          getCityName(latitude, longitude)
+        },
+        function (error) {
+          console.error("Error getting location:", error)
+        },
+      )
+    }
+  }, [])
+
   useEffect(() => {
     if (searchedCity) {
       getTodaysWeather()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchedCity])
+
   return (
     <>
       <h1 className="mt-5 text-center title">Do I need a umbrella? </h1>
@@ -51,20 +102,15 @@ const Home = () => {
         h-100 pt-5 "
       >
         <SearchBar handleSearchClick={handleSearchClick} />
-        <h2>Weather forecast for {capitalizeFirstLetter(searchedCity)}</h2>
+        <h2>Weather forecast for {searchedCity}</h2>
         <Row className="gap-3 container-fluid justify-content-center my-3">
           {isLoading && <Loading />}
-          {weatherData && (
-            <TodaysForecast
-              weatherData={weatherData}
-              capitalizeFirstLetter={capitalizeFirstLetter}
-            />
-          )}
+          {weatherData && <TodaysForecast weatherData={weatherData} />}
           {isLoading && <Loading />}
           {weatherData && (
             <ThreeHoursForecast
-              lon={weatherData.coord.lon}
-              lat={weatherData.coord.lat}
+              lon={lon}
+              lat={lat}
             />
           )}
         </Row>
@@ -72,8 +118,8 @@ const Home = () => {
           {isLoading && <Loading />}
           {weatherData && (
             <PollutionStatus
-              lon={weatherData.coord.lon}
-              lat={weatherData.coord.lat}
+              lon={/* weatherData.coord. */ lon}
+              lat={lat}
             />
           )}
           {isLoading && <Loading />}

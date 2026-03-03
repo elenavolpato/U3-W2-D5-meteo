@@ -1,8 +1,9 @@
 import { Col, Row } from "react-bootstrap"
 import weatherDescriptions from "../data/weatherDescriptions.json"
+import { capitalizeFirstLetter } from "../assets/utils/Utils"
 
 const TodaysForecast = (props) => {
-  const { weatherData, capitalizeFirstLetter } = props
+  const { weatherData } = props
   const convertTempToCelsius = (temp) => temp.toFixed(1) + " °C"
 
   const renderCurrentConditions = (main, description) => {
